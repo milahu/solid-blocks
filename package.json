@@ -13,11 +13,6 @@
   ],
   "module": "src/blocks/index.js",
   "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./src/blocks/index.js"
-    }
-  },
   "sideEffects": false,
   "license": "MIT",
   "zzz_devDependencies": {
