@@ -11,11 +11,11 @@
     "src",
     "dist"
   ],
-  "module": "src/solid-blocks.jsx",
+  "module": "src/blocks/index.js",
   "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/solid-blocks.jsx"
+      "import": "./src/blocks/index.js"
     }
   },
   "sideEffects": false,
