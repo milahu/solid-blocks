@@ -12,7 +12,7 @@
     "dist"
   ],
   "module": "src/blocks/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "types/index.d.ts",
   "sideEffects": false,
   "license": "MIT",
   "zzz_devDependencies": {
