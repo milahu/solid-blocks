@@ -1,12 +1,12 @@
-import { JSX, createEffect, createSignal, onCleanup, createMemo, Accessor, Setter } from "solid-js";
+import { createEffect, createSignal, onCleanup, createMemo, } from "solid-js";
 
-export type WrappedElement<P> = (props: P) => JSX.Element;
 
-export const toStyleObject = (style: string | JSX.CSSProperties) => {
+
+export const toStyleObject = (style) => {
   if (typeof style === "object") {
     return style;
   }
-  const styleObject: JSX.CSSProperties = {};
+  const styleObject = {};
   (style || "").replace(/([\w-]+)\s*:\s*([^;]+)/g, (_, prop, value) => {
     styleObject[prop] = value;
     return "";
@@ -14,17 +14,17 @@ export const toStyleObject = (style: string | JSX.CSSProperties) => {
   return styleObject;
 };
 
-export const composeStyles = (...styles: (JSX.CSSProperties | string)[]) =>
+export const composeStyles = (...styles) =>
   Object.assign({}, ...styles.map(toStyleObject));
 
 export const getNearestNode = (
-  target: EventTarget | null | undefined,
-  name: string
-): Node | null | undefined => {
+  target,
+  name
+) => {
   if (!target) {
     return;
   }
-  let nearest: Node & ParentNode | null = target as Node & ParentNode;
+  let nearest = target ;
   while (nearest && nearest.nodeName !== name) {
     nearest = nearest.parentNode;
   }
@@ -40,54 +40,54 @@ export const getRandom = () => {
   return lastItem;
 };
 
-type MediaQueryItem = 
-  |'all'
-  | 'print'
-  | 'screen' 
-  | `(${'min-' | 'max-' | ''}${
-    | 'aspect-ratio'
-    | 'color'
-    | 'color-gamut'
-    | 'color-index'
-    | 'display-mode'
-    | 'grid'
-    | 'inverted-colors'
-    | 'height'
-    | 'orientation'
-    | 'pointer'
-    | `prefers-${'color-scheme' | 'contrast' | 'reduced-motion' | 'reduced-transparency'}`
-    | 'resolution'
-    | 'scan'
-    | 'width'
-  }: ${string})`;
-type MediaQueryOperator = ' and ' | ' not ' | ' only ' | ', ';
-type MediaQueryString = 
-  | MediaQueryItem
-  | `${MediaQueryItem}${MediaQueryOperator}${MediaQueryItem}`
 
-export const useMediaQuery = (query: MediaQueryString): Accessor<boolean> => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const useMediaQuery = (query) => {
   const matcher = window.matchMedia(query);
   const [matches, setMatches] = createSignal(matcher.matches);
 
-  const changeHandler = (ev: MediaQueryListEvent) => setMatches(ev.matches);
+  const changeHandler = (ev) => setMatches(ev.matches);
   matcher.addEventListener('change', changeHandler);
   onCleanup(() => matcher.removeEventListener('change', changeHandler));
 
   return matches
 }
 
-const parseStorage = <T extends any | string>(data: string | null | undefined, useJson: boolean): T | undefined =>
+const parseStorage = (data, useJson) =>
   useJson ? (data ? JSON.parse(data) : undefined) : data ?? undefined;
 
-const putStorage = <T extends any | string>(key: string, data: T): void =>
+const putStorage = (key, data) =>
   localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data))
 
-export function createLocalStorageSignal<T extends any | string>(key: string, initialValue?: T, useJson = false):
-  [Accessor<T | undefined>, Setter<T | undefined>] {
+export function createLocalStorageSignal(key, initialValue, useJson = false)
+ {
   if (localStorage.getItem(key) === null && initialValue !== undefined) {
     putStorage(key, initialValue);
   }
-  const [value, setValue] = createSignal(parseStorage<T>(localStorage.getItem(key), useJson));
+  const [value, setValue] = createSignal(parseStorage(localStorage.getItem(key), useJson));
   
   createEffect(() =>
     useJson && value() === undefined
@@ -100,7 +100,7 @@ export function createLocalStorageSignal<T extends any | string>(key: string, in
 
 export const useDarkMode = (localStorageKey = "COLOR_SCHEME") => {
   const mediaQueryPrefersDark = useMediaQuery("(prefers-color-scheme: dark)");
-  const [storedPrefersDark, setStoredPrefersDark] = createLocalStorageSignal<boolean>(localStorageKey, undefined, true);
+  const [storedPrefersDark, setStoredPrefersDark] = createLocalStorageSignal(localStorageKey, undefined, true);
   const darkMode = createMemo(() => storedPrefersDark() ?? mediaQueryPrefersDark());
 
   createEffect(() => {
@@ -110,16 +110,16 @@ export const useDarkMode = (localStorageKey = "COLOR_SCHEME") => {
   return [darkMode, setStoredPrefersDark];
 };
 
-export type NodeName = string;
+
 
 export const getElements = (
-  children: JSX.Element | ((...args: any[]) => JSX.Element),
-  filter?: NodeName | ((node: HTMLElement) => boolean),
+  children,
+  filter,
   /** if the children contains a callback, you may add an array of props */
-  props: any = [],
+  props = [],
   /** you can add prepended results if you want */
   result = []
-): HTMLElement[] | undefined => {
+) => {
   if (!children) {
     return;
   }
@@ -128,11 +128,11 @@ export const getElements = (
   } else if (typeof children === "function") {
     getElements(children.apply(null, props), filter, props, result);
   } else {
-    const node = children as HTMLElement;
+    const node = children ;
     if (
       !filter || (typeof filter === "function" ? filter(node) : node.nodeName === filter)
     ) {
-      (result as HTMLElement[]).push(node);
+      (result ).push(node);
     }
   }
   return result;

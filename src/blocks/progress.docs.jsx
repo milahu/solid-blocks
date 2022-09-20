@@ -3,7 +3,7 @@ import { Progress } from "./progress";
 
 export const ProgressDocs = () => {
   const [value, setValue] = createSignal(0);
-  let interval: number;
+  let interval;
   onMount(() => {
     interval = window.setInterval(() => {
       setValue(v => (v + 1) % 101);

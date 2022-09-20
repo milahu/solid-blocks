@@ -11,7 +11,7 @@ export const AccordionDocs = () => {
   const [allowToggle, setAllowToggle] = createSignal(false);
   const children = createMemo(() => 
     useWrappedChilds() 
-      ? (open: boolean) => <><AccordionHeader>{open ? 'Open' : 'Closed'}</AccordionHeader><p>Rest</p></>
+      ? (open) => <><AccordionHeader>{open ? 'Open' : 'Closed'}</AccordionHeader><p>Rest</p></>
       : <><AccordionHeader>Static header</AccordionHeader><p>static content</p></>
   );
 
@@ -60,7 +60,7 @@ AccordionProps {
         children={children()}
         component={Accordion}
         open={exampleOpen()}
-        ontoggle={(open: boolean) => setEvents((e) => `ontoggle(${open})\n${e}`)}
+        ontoggle={(open) => setEvents((e) => `ontoggle(${open})\n${e}`)}
       />
     </div>
     <hr/>

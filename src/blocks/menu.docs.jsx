@@ -6,7 +6,7 @@ import {
   MenuItemGroup,
   MenuOption,
   MenuOptionGroup,
-  MenuProps,
+
 } from "./menu";
 import { Radio, RadioGroup } from "./radio";
 
@@ -99,7 +99,7 @@ MenuOptionsGroupProps {
         {events()}
       </pre>
       <div class="example" style={`text-align: ${align()}`}>
-        <Menu align={align() as MenuProps['align']}>
+        <Menu align={align() }>
           <MenuButton variant="icon">☰</MenuButton>
           <MenuItem>Item outside MenuItemGroup</MenuItem>
           <hr />

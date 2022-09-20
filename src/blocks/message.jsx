@@ -1,14 +1,14 @@
-import { Component, JSX, createMemo, splitProps } from "solid-js";
+import { createMemo, splitProps } from "solid-js";
 
 import "./base.css";
 import "./message.css";
 
-export type MessageProps = {
-  type: "success" | "info" | "warning" | "error";
-  inline?: boolean;
-} & JSX.HTMLAttributes<HTMLDivElement>;
 
-export const Message: Component<MessageProps> = (props) => {
+
+
+
+
+export const Message = (props) => {
   const [messageProps, divProps] = splitProps(props, [
     "type",
     "class",

@@ -1,7 +1,7 @@
 import {
-  Accessor,
-  JSX,
-  Component,
+
+
+
   onMount,
   onCleanup,
   createSignal,
@@ -12,22 +12,22 @@ import {
   createEffect,
   Show,
 } from "solid-js";
-import { Button, ButtonProps } from "./button";
+import { Button, } from "./button";
 import { getElements } from "./tools";
 
 import "./base.css";
 import "./menu.css";
 import { isServer } from "solid-js/web";
 
-export type MenuProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  open?: boolean;
-  ontoggle?: (open?: boolean) => void;
-  align?: "left" | "center" | "right";
-};
 
-const getFirstMenuButton = (open: Accessor<boolean>) => {
+
+
+
+
+
+const getFirstMenuButton = (open) => {
   let counter = 0;
-  return (node: HTMLElement) => {
+  return (node) => {
     const isButton =
       node.nodeName === "BUTTON" || node.getAttribute("role") === "button";
     const isMenuButton =
@@ -46,7 +46,7 @@ const getFirstMenuButton = (open: Accessor<boolean>) => {
 
 const getMenuItems = () => {
   let counter = 0;
-  return (node: HTMLElement) => {
+  return (node) => {
     const isButton =
       node.nodeName === "BUTTON" || node.getAttribute("role") === "button";
     const isMenuButton =
@@ -56,7 +56,7 @@ const getMenuItems = () => {
   };
 };
 
-export const Menu: Component<MenuProps> = (props) => {
+export const Menu = (props) => {
   const [open, setOpen] = createSignal(!!props.open);
   const [local, divProps] = splitProps(props, [
     "open",
@@ -64,14 +64,14 @@ export const Menu: Component<MenuProps> = (props) => {
     "ontoggle",
     "align",
   ]);
-  const opener = createMemo<HTMLElement | undefined>(
+  const opener = createMemo(
     () => (getElements(props.children, getFirstMenuButton(open), [open()]) ?? [])[0]
   );
   const menuItems = createMemo(() =>
     getElements(props.children, getMenuItems(), [open()]) ?? []
   );
 
-  let menuRef!: HTMLDivElement;
+  let menuRef;
 
   createEffect(() => {
     const visible = open();
@@ -81,8 +81,8 @@ export const Menu: Component<MenuProps> = (props) => {
     }
   });
 
-  const clickHandler = (ev: MouseEvent) => {
-    const target = ev.target as HTMLElement;
+  const clickHandler = (ev) => {
+    const target = ev.target ;
     const role = target?.getAttribute("role");
     const button = opener();
     if (!ev.defaultPrevented && button) {
@@ -103,9 +103,9 @@ export const Menu: Component<MenuProps> = (props) => {
   onMount(() => !isServer && document.addEventListener("click", clickHandler, { capture: false }));
   onCleanup(() => !isServer && document.removeEventListener("click", clickHandler));
 
-  let focusItem: HTMLElement | undefined;
-  const overHandler = (ev: MouseEvent) => {
-    const target = ev.target as HTMLElement;
+  let focusItem;
+  const overHandler = (ev) => {
+    const target = ev.target ;
     if (
       ["menuitem", "menuitemradio", "menuitemcheckbox"].includes(
         target?.getAttribute("role") ?? ''
@@ -118,8 +118,8 @@ export const Menu: Component<MenuProps> = (props) => {
     }
   };
 
-  const moveFocus = (step: 1 | -1) => {
-    const menuItems = menuRef.querySelectorAll<HTMLElement>(
+  const moveFocus = (step) => {
+    const menuItems = menuRef.querySelectorAll(
       '[role^=menuitem]:not([aria-disabled], [tabIndex="-1"])'
     );
     const currentPos = focusItem
@@ -133,8 +133,8 @@ export const Menu: Component<MenuProps> = (props) => {
     focusItem.focus();
   };
 
-  const keyHandler = (ev: KeyboardEvent) => {
-    const target = ev.target as HTMLElement;
+  const keyHandler = (ev) => {
+    const target = ev.target ;
     if (ev.key === "Escape" && open()) {
       setOpen(false);
       opener()?.focus();
@@ -146,7 +146,7 @@ export const Menu: Component<MenuProps> = (props) => {
     ) {
       target.click();
       if (role === "menuitemradio") {
-        const radios = target.parentNode?.querySelectorAll<HTMLElement>(
+        const radios = target.parentNode?.querySelectorAll(
           '[role="menuitemradio"]:not([aria-disabled], [tabIndex="-1"]'
         ) ?? [];
         const currentPos = Array.prototype.indexOf.call(radios, target);
@@ -182,23 +182,23 @@ export const Menu: Component<MenuProps> = (props) => {
   );
 };
 
-export type MenuButtonProps = ButtonProps;
 
-export const MenuButton: Component<MenuButtonProps> = (props) => (
+
+export const MenuButton = (props) => (
   <Button {...props} aria-haspopup="menu" />
 );
 
-export type MenuItemProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-export const MenuItem: Component<MenuItemProps> = (props) => (
+
+export const MenuItem = (props) => (
   <div tabIndex="0" {...props} role="menuitem" />
 );
 
-export type MenuItemGroupProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  title?: JSX.Element;
-};
 
-export const MenuItemGroup: Component<MenuItemGroupProps> = (props) => {
+
+
+
+export const MenuItemGroup = (props) => {
   const [local, divProps] = splitProps(props, ["title", "children"]);
   return (
     <div {...divProps} role="group">
@@ -210,33 +210,33 @@ export const MenuItemGroup: Component<MenuItemGroupProps> = (props) => {
   );
 };
 
-export type MenuOptionsContextValue = [
-  value: Accessor<string[]>,
-  change: (value: string) => void,
-  type?: "checkbox" | "radio"
-];
 
-export const MenuOptionsContext = createContext<MenuOptionsContextValue>([
+
+
+
+
+
+export const MenuOptionsContext = createContext([
   () => [],
   (value) => console.warn("context default!", value),
 ]);
 
-export type MenuOptionProps = Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  "onchange"
-> & {
-  onchange?: (checked?: boolean) => void;
-  value: string;
-};
 
-export const MenuOption: Component<MenuOptionProps> = (props) => {
+
+
+
+
+
+
+
+export const MenuOption = (props) => {
   const [local, divProps] = splitProps(props, ["value", "onchange"]);
   const [value, change, type] = useContext(MenuOptionsContext);
   const selected = createMemo(() => value().includes(props.value));
   const clickHandler = createMemo(
     () => () => props["aria-disabled"] !== "true" && change(props.value)
   );
-  const keyHandler = createMemo(() => (ev: KeyboardEvent) => {
+  const keyHandler = createMemo(() => (ev) => {
     if (ev.key === " ") {
       ev.preventDefault();
       props["aria-disabled"] !== "true" && change(props.value);
@@ -264,26 +264,26 @@ export const MenuOption: Component<MenuOptionProps> = (props) => {
   );
 };
 
-export type MenuOptionGroupProps = Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  "onchange"
-> &
-  (
-    | {
-        type: "checkbox";
-        onchange?: (value: string[]) => void;
-        title?: JSX.Element;
-        value?: string[];
-      }
-    | {
-        type?: "radio" | undefined;
-        onchange?: (value: string) => void;
-        title?: JSX.Element;
-        value?: [string] | string;
-      }
-  );
 
-export const MenuOptionGroup = (props: MenuOptionGroupProps): JSX.Element => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const MenuOptionGroup = (props) => {
   const [local, divProps] = splitProps(props, [
     "title",
     "value",
@@ -298,7 +298,7 @@ export const MenuOptionGroup = (props: MenuOptionGroupProps): JSX.Element => {
         prev.length === next.length && prev[0] === next[0],
     }
   );
-  const change = createMemo<(value: string) => void>(() =>
+  const change = createMemo(() =>
     props.type === "checkbox"
       ? (value) =>
           setValue((prev) =>
@@ -309,7 +309,7 @@ export const MenuOptionGroup = (props: MenuOptionGroupProps): JSX.Element => {
       : (value) => setValue((prev) => (prev[0] === value ? prev : [value]))
   );
 
-  createEffect((lastVal?: string | string[] | [string]) => {
+  createEffect((lastVal) => {
     if (lastVal !== local.value) {
       setValue(
         Array.isArray(local.value)
@@ -322,7 +322,7 @@ export const MenuOptionGroup = (props: MenuOptionGroupProps): JSX.Element => {
     return local.value;
   }, local.value);
 
-  createEffect((lastVal?: string[]) => {
+  createEffect((lastVal) => {
     const newVal = value();
     if (
       props.type === "checkbox"

@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Show } from "solid-js";
 import {
   Bar,
   Checkbox,
@@ -33,7 +33,7 @@ import { HelpersDocs } from "./blocks/Helpers.docs";
 import { ThemeDocs } from "./blocks/theme.docs";
 import { TagDocs } from "./blocks/tag.docs";
 
-const App: Component = () => {
+const App = () => {
   const [darkMode, setDarkMode] = useDarkMode();
   return (
     <div class="app" id="top">

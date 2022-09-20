@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js"
 import { Checkbox } from "./checkbox"
 import { Select } from "./select";
-import { TextField, TextFieldType } from "./textfield";
+import { TextField, } from "./textfield";
 
 export const TextfieldDocs = () => {
   const [vertical, setVertical] = createSignal(false);
@@ -60,7 +60,7 @@ TextfieldProps {
       <TextField
         aria-orientation={vertical() ? 'vertical' : undefined}
         multiline={multiline()}
-        type={multiline() ? undefined : type() as TextFieldType}
+        type={multiline() ? undefined : type() }
         label="Textfield"
         onchange={(v) => {
           setValue(v);

@@ -1,7 +1,7 @@
 import {
-  Accessor,
-  Component,
-  JSX,
+
+
+
   splitProps,
   createEffect,
   createSignal,
@@ -14,40 +14,40 @@ import { Portal } from "solid-js/web";
 
 import "./base.css";
 import "./modal.css";
-import { getElements, WrappedElement } from "./tools";
+import { getElements, } from "./tools";
 
-type WrappedModalContentProps = {
-  open: Accessor<boolean>;
-  /**
-   * toggle
-   *
-   * if called with boolean argument, it will set the open state
-   * according to the argument, otherwise toggle it
-   */
-  toggle: (open?: boolean | unknown) => void;
-};
 
-export type ModalProps = Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  "children"
-> & {
-  closeOnClickOutside?: boolean;
-  closeOnEsc?: boolean;
-  open?: boolean;
-  noPortal?: boolean;
-  children: WrappedElement<WrappedModalContentProps> | JSX.Element;
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let modalCount = 0;
 
-export const Modal = (props: ModalProps): JSX.Element => {
+export const Modal = (props) => {
   const [local, containerProps] = splitProps(props, [
     "open",
     "noPortal",
     "children",
   ]);
   const [open, setOpen] = createSignal(local.open);
-  const toggle = (open?: boolean) =>
+  const toggle = (open) =>
     setOpen(typeof open === "boolean" ? open : (o) => !o);
   const modalContent = createMemo(() =>
     getElements(
@@ -64,7 +64,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
     )
   );
 
-  let modalRef!: HTMLDivElement;
+  let modalRef;
   createEffect(() => open() && (modalRef?.focus(), modalRef?.scrollIntoView()));
 
   modalCount++;
@@ -90,14 +90,14 @@ export const Modal = (props: ModalProps): JSX.Element => {
   });
 
   const divProps = mergeProps(containerProps, {
-    role: "dialog" as JSX.HTMLAttributes<HTMLDivElement>['role'],
+    role: "dialog" ,
     tabIndex: -1,
     class: props.class ? `sb-modal ${props.class}` : "sb-modal",
     children: modalContent(),
     onClick: createMemo(() =>
       props.closeOnClickOutside
-        ? (ev: MouseEvent) => {
-            const target = ev.target as HTMLElement;
+        ? (ev) => {
+            const target = ev.target ;
             if (!modalContent().some((content) => content?.contains(target))) {
               toggle(false);
             }
@@ -106,7 +106,7 @@ export const Modal = (props: ModalProps): JSX.Element => {
     )(),
     onkeyup: createMemo(() =>
       props.closeOnEsc !== false
-        ? (ev: KeyboardEvent) => {
+        ? (ev) => {
             console.log(ev);
             if (ev.key === "Escape" && !ev.defaultPrevented) {
               setOpen(false);
@@ -137,36 +137,36 @@ export const Modal = (props: ModalProps): JSX.Element => {
   );
 };
 
-export type ModalContentProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-export const ModalContent: Component<ModalContentProps> = (props) => (
+
+export const ModalContent = (props) => (
   <div
     {...props}
     class={props.class ? `sb-modal-content ${props.class}` : "sb-modal-content"}
   />
 );
 
-export type ModalHeaderProps = JSX.HTMLAttributes<HTMLElement>;
 
-export const ModalHeader: Component<ModalHeaderProps> = (props) => (
+
+export const ModalHeader = (props) => (
   <header
     {...props}
     class={props.class ? `sb-modal-header ${props.class}` : "sb-modal-header"}
   />
 );
 
-export type ModalBodyProps = JSX.HTMLAttributes<HTMLElement>;
 
-export const ModalBody: Component<ModalBodyProps> = (props) => (
+
+export const ModalBody = (props) => (
   <main
     {...props}
     class={props.class ? `sb-modal-body ${props.class}` : "sb-modal-body"}
   />
 );
 
-export type ModalFooterProps = JSX.HTMLAttributes<HTMLElement>;
 
-export const ModalFooter: Component<ModalFooterProps> = (props) => (
+
+export const ModalFooter = (props) => (
   <footer
     {...props}
     class={props.class ? `sb-modal-footer ${props.class}` : "sb-modal-footer"}

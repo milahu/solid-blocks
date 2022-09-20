@@ -3,7 +3,7 @@ import { Button } from "./button";
 import { Radio, RadioGroup } from "./radio"
 
 export const RadioDocs = () => {
-  const [value, setValue] = createSignal<"1" | "2">("2");
+  const [value, setValue] = createSignal("2");
   const [events, setEvents] = createSignal("");
   return <>
     <h2 id="radio-docs">Radio / RadioGroup</h2>
@@ -35,7 +35,7 @@ RadioGroupProps {
     <div class="example">
       <RadioGroup class="flex-row" value={value()} onchange={(value) => {
         setEvents(e => `onchange(${value})\n${e}`)
-        setValue(value as "1" | "2");
+        setValue(value );
       }}>
         <Radio value="1"> First</Radio>
         <Radio value="2"> Second</Radio>

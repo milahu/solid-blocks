@@ -1,6 +1,6 @@
 import {
-  Component,
-  JSX,
+
+
   splitProps,
   Show,
   createEffect,
@@ -10,23 +10,23 @@ import {
 import "./base.css";
 import "./radio.css";
 
-export type RadioProps = JSX.HTMLAttributes<HTMLLabelElement> &
-  JSX.HTMLAttributes<HTMLInputElement> & {
-    /**
-     * align the checkbox inside its label
-     * can be 'left' or 'right; default is 'left'
-     */
-    align?: "left" | "right";
-    autofocus?: boolean;
-    checked?: boolean;
-    disabled?: boolean;
-    name?: string;
-    oninvalid?: JSX.EventHandler<HTMLInputElement, Event>;
-    required?: boolean;
-    value?: string;
-  };
 
-export const Radio: Component<RadioProps> = (props) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const Radio = (props) => {
   const [inputProps, content, labelProps] = splitProps(
     props,
     [
@@ -65,24 +65,24 @@ export const Radio: Component<RadioProps> = (props) => {
   );
 };
 
-export type RadioGroupProps = Omit<
-  JSX.HTMLAttributes<HTMLDivElement>,
-  "onchange"
-> & {
-  onchange?: (value: string) => void;
-  value?: string;
-};
+
+
+
+
+
+
+
 
 let radioGroups = 1;
 
-export const RadioGroup: Component<RadioGroupProps> = (props) => {
+export const RadioGroup = (props) => {
   const [local, divProps] = splitProps(props, [
     "onchange",
     "value",
     "children",
   ]);
 
-  let group!: HTMLDivElement;
+  let group;
   onMount(() => {
     const items = group.querySelectorAll('input[type="radio"]');
     if (
@@ -109,7 +109,7 @@ export const RadioGroup: Component<RadioGroupProps> = (props) => {
 
   let value = local.value;
   const changeHandler = () => {
-    const newValue = group?.querySelector<HTMLInputElement>('input[type="radio"]:checked')?.value;
+    const newValue = group?.querySelector('input[type="radio"]:checked')?.value;
     if (newValue && value !== newValue) {
       local.onchange?.(newValue);
       value = newValue;

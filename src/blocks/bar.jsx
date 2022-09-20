@@ -1,17 +1,17 @@
-import { Component, JSX, mergeProps, splitProps } from "solid-js";
+import { mergeProps, splitProps } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import "./base.css";
 import "./bar.css";
 
-export type BarProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  mount?: HTMLElement;
-  placement?: "top" | "right" | "bottom" | "left";
-  position?: Omit<JSX.CSSProperties["position"], "static">;
-  portal?: boolean;
-};
 
-export const Bar: Component<BarProps> = (props) => {
+
+
+
+
+
+
+export const Bar = (props) => {
   const [local, rest] = splitProps(props, [
     "placement",
     "position",
