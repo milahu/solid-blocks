@@ -27,16 +27,24 @@ const setTabState = (tab, nr, index) => {
   }
 };
 
-const setPanelState = (panel, nr, index) => {
-  if (panel?.hasAttribute && panel.hasAttribute("hidden") === (nr === index)) {
-    panel[nr === index ? "removeAttribute" : "setAttribute"](
-      "hidden",
-      "hidden"
-    );
-  }
+const setPanelState = {
+  block: (panel, nr, index) => {
+    if (panel?.hasAttribute && panel.hasAttribute("hidden") === (nr === index)) {
+      panel[nr === index ? "removeAttribute" : "setAttribute"](
+        "hidden",
+        "hidden"
+      );
+    }
+  },
+  flex: (panel, nr, index) => {
+    if (panel?.hasAttribute) {
+      panel.style.display = nr === index ? 'flex' : 'none';
+    }
+  },
 };
 
 export const Tabs = (props) => {
+  let ref;
   const [selected, setSelected] = createSignal(props.index ?? 0);
   const tabs = createMemo(() => getElements(props.children, "LI") || []);
   const panels = createMemo(() => getElements(props.children, "DIV") || []);
@@ -55,9 +63,11 @@ export const Tabs = (props) => {
       const elem = tab ;
       setTabState(elem, nr, index);
     });
+
+    const { display } = window.getComputedStyle(ref);
     panels().forEach((panel, nr) => {
       const elem = panel ;
-      setPanelState(elem, nr, index);
+      setPanelState[display](elem, nr, index);
     });
   });
 
@@ -89,7 +99,7 @@ export const Tabs = (props) => {
   };
 
   return (
-    <section classList={mergeProps(props.classList ?? {}, { "sb-tabs": true })}>
+    <section ref={ref} classList={mergeProps(props.classList ?? {}, { "sb-tabs": true })}>
       <ul
         role="tablist"
         aria-orientation={!props.vertical ? "horizontal" : "vertical"}
